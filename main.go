@@ -19,6 +19,8 @@ func main() {
 		panic(err)
 	}
 
+	defer application.DB.Close()
+
 	application.Logger.Printf("application is running at port %d", port)
 
 	r := routes.SetupRoutes(application)
