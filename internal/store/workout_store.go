@@ -131,7 +131,8 @@ func (pg *PostgresWorkoutStore) GetWorkOutById(id int64) (*Workout, error) {
 			    weight,
 			    notes,
 			    order_index 
-			FROM workout_entries	
+			FROM workout_entries
+			WHERE workout_id = $1
 	    `
 
 	rows, err := pg.db.Query(entryQuery, id)
@@ -148,6 +149,7 @@ func (pg *PostgresWorkoutStore) GetWorkOutById(id int64) (*Workout, error) {
 			&entry.ID,
 			&entry.ExerciseName,
 			&entry.Sets,
+			&entry.Reps,
 			&entry.DurationSeconds,
 			&entry.Weight,
 			&entry.Notes,
@@ -219,7 +221,7 @@ func (pg *PostgresWorkoutStore) UpdateWorkout(workout *Workout) error {
 		_, err := tx.Exec(
 			query,
 
-			entry.ID,
+			workout.ID,
 			entry.ExerciseName,
 			entry.Sets,
 			entry.Reps,
