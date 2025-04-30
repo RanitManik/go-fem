@@ -166,7 +166,7 @@ curl -X POST "http://localhost:8080/users" \
 curl -X POST "http://localhost:8080/tokens/authentication" \
      -H "Content-Type: application/json" \
      -d '{
-"username": "johndoe",
+"username": "melkey",
   "password": "SecureP@ssword123"
 }'
 

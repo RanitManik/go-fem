@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/RanitManik/go-fem/internal/api"
+	"github.com/RanitManik/go-fem/internal/middleware"
 	"github.com/RanitManik/go-fem/internal/migrations"
 	"github.com/RanitManik/go-fem/internal/store"
 	"log"
@@ -16,6 +17,7 @@ type Application struct {
 	WorkoutHandler *api.WorkoutHandler
 	UserHandler    *api.UserHandler
 	TokenHandler   *api.TokenHandler
+	Middleware     middleware.UserMiddleware
 	DB             *sql.DB
 }
 
@@ -42,6 +44,7 @@ func NewApplication() (*Application, error) {
 	workoutHandler := api.NewWorkoutHandler(workoutStore, logger)
 	userHandler := api.NewUserHandler(userStore, logger)
 	tokenHandler := api.NewTokenHandler(tokenStore, userStore, logger)
+	middlewareHandler := middleware.UserMiddleware{UserStore: userStore}
 
 	app := &Application{
 		Logger:         logger,
@@ -49,6 +52,7 @@ func NewApplication() (*Application, error) {
 		UserHandler:    userHandler,
 		TokenHandler:   tokenHandler,
 		DB:             pgDB,
+		Middleware:     middlewareHandler,
 	}
 
 	return app, nil
